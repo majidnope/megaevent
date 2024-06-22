@@ -1,68 +1,91 @@
 "use client"
-import React from 'react'
-import sx from "./page.module.scss"
-import Image from 'next/image'
-import { useParams } from 'next/navigation'
-import QRCode from 'react-qr-code'
-import { Button, Loader } from '@mantine/core'
+import React from 'react';
+import sx from "./page.module.scss";
+import { useParams } from 'next/navigation';
+import { Button, Loader } from '@mantine/core';
+import html2canvas from "html2canvas";
+import Ticket from './Ticket';
+import { useEffect } from 'react';
+import { useScreenshot } from 'use-react-screenshot';
 
 const Page = () => {
-    const { token } = useParams()
+    const ToCaptureRef = React.useRef();
+
+
+    const [image, takeScreenshot] = useScreenshot()
+    const getImage = () => takeScreenshot(ToCaptureRef.current)
+    useEffect(() => {
+        console.log(image);
+    }, [image])
+
+    function captureScreenshot() {
+        // Ensure styles are fully applied by forcing reflow
+        const element = ToCaptureRef.current;
+        if (element) {
+            element.style.display = 'none';
+            element.offsetHeight; // trigger reflow
+            element.style.display = '';
+        }
+
+        // Add a delay to ensure rendering is complete
+        setTimeout(() => {
+            html2canvas(ToCaptureRef.current, { useCORS: true })
+                .then((canvas) => {
+                    console.log(canvas);
+                    var dataURL = canvas.toDataURL("image/png");
+                    var img = new Image();
+                    img.src = dataURL;
+                    img.download = dataURL;
+                    var a = document.createElement("a");
+                    a.innerHTML = "DOWNLOAD";
+                    a.target = "_blank";
+                    a.href = img.src;
+                    a.download = img.download;
+                    a.style.display = "none";
+                    document.body.appendChild(a);
+                    a.click();
+                });
+        }, 100); // Adjust delay as needed
+    }
+
+    const { token } = useParams();
     const [loading, setLoading] = React.useState(true);
-    const [payment, setPayment] = React.useState({})
+    const [payment, setPayment] = React.useState({});
 
     React.useEffect(() => {
         console.log(token);
-        setLoading(true)
+        setLoading(true);
         if (token) {
-            fetch("/api/pay", { method: "POST", body: JSON.stringify({ paymentId: `pay_${token}` }), headers: { 'Content-Type': 'application/json' }, }).then(res => {
+            fetch("/api/pay", {
+                method: "POST",
+                body: JSON.stringify({ paymentId: `pay_${token}` }),
+                headers: { 'Content-Type': 'application/json' },
+            }).then(res => {
                 res.json().then(data => {
                     console.log(data);
-                    setPayment(data.payment)
+                    setPayment(data.payment);
                     setLoading(false);
-                })
-            })
+                });
+            });
         }
-    }, [token])
+    }, [token]);
+
     return (
         <div className={sx.container}>
+            {loading ? <Loader color="blue" type="bars" styles={{
+                root: {
+                    position: "absolute",
+                    top: "50%"
 
-            {loading ? <Loader color="blue" type="bars" /> : <div className={sx.holder}>
-                <div className={sx.info}>
-                    <span>Phone Number: <span>{payment?.contact}</span></span>
-                    <span>Amount Payed: <span>{payment?.amount / 100}</span></span>
-                    <span>Ticket Type: <span>{payment?.amount / 100 % 499 ? "Gold Circle" : "Premium Circle"}</span></span>
-                </div>
-                <div className={sx.qr}>
-                    <div className={sx.ticket}>
-                        <Image src="/tic.jpeg" fill object-fit="cover" />
-                        {<QRCode
-                            className={sx.btn}
-                            size={156}
-                            style={{
-                                zIndex: 3,
-                                position: "absolute",
-                                height: "auto",
-                                top: "11%",
-                                right: "16%",
-                                width: " 44px"
-                            }}
-                            value={payment?.id}
-                            viewBox={`0 0 256 256`}
-                        />}
-                        {/* <Button className={sx.btn} onClick={() => {
-                            open()
-                            setTicket(type.gold)
-                        }}>
-                            Book this ticket
-
-                        </Button> */}
-                    </div>
-
-                </div>
-            </div>}
+                }
+            }} /> :
+                <>
+                    <Ticket ref={ToCaptureRef} payment={payment} />
+                    <Button onClick={captureScreenshot}>Download Ticket</Button>
+                </>
+            }
         </div>
-    )
+    );
 }
 
-export default Page
+export default Page;

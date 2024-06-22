@@ -85,7 +85,7 @@ export default function Home() {
             body: JSON.stringify(data),
             headers: { 'Content-Type': 'application/json' },
           });
-          
+
           const res = await result.json();
           console.log(res);
           close()
@@ -231,6 +231,11 @@ export default function Home() {
           <SimpleGrid>
             <span style={{ color: "#007700" }}>Payable <IconCurrencyRupee size={14} /> {ticket * Number(seats)}</span>
             <Button type="submit">Book My Ticket</Button>
+            <span style={{
+              color: "red",
+              fontSize: "x-small",
+              textAlign: "center"
+            }}>No refund after booking the ticket</span>
           </SimpleGrid>
         </form>
       </Modal>
