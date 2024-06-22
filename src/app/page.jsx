@@ -12,8 +12,10 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const nav = useRouter()
   const [type, setType] = useState({ gold: 199, premium: 499 })
+
   const [opened, { open, close }] = useDisclosure(false);
   const [ticket, setTicket] = useState()
+  const [loading, setLoading] = useState(false)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [amount, setAmount] = useState(0)
@@ -64,6 +66,7 @@ export default function Home() {
 
     }
     try {
+      setLoading(true)
       const orderId = await createOrderId();
       const options = {
         key: "rzp_test_eqV8dCfHg4PKeK",
@@ -90,6 +93,7 @@ export default function Home() {
           console.log(res);
           close()
           if (res.isOk) {
+            setLoading(false)
             nav.push(`/${res.id.split('pay_')[1]}`)
           }
           else {
@@ -104,13 +108,16 @@ export default function Home() {
           color: '#3399cc',
         },
       };
-      console.log("tes");
       const paymentObject = new window.Razorpay(options);
       paymentObject.on('payment.failed', function (response) {
+        setLoading(false)
+        close()
         alert(response.error.description);
       });
       paymentObject.open();
     } catch (error) {
+      setLoading(false)
+      close()
       console.log(error);
     }
   };
@@ -230,7 +237,7 @@ export default function Home() {
 
           <SimpleGrid>
             <span style={{ color: "#007700" }}>Payable <IconCurrencyRupee size={14} /> {ticket * Number(seats)}</span>
-            <Button type="submit">Book My Ticket</Button>
+            <Button type="submit" loading={loading}>Book My Ticket</Button>
             <span style={{
               color: "red",
               fontSize: "x-small",
@@ -241,13 +248,14 @@ export default function Home() {
       </Modal>
       <main className={sx.main}>
         <div className={sx.banner}>
+          <h3>Calicut Mega Event 2024</h3>
 
         </div>
 
         <div className={sx.block}>
           <span>Available Tickets</span>
           <SimpleGrid cols={{ sm: 1, lg: 3 }} spacing="xl" >
-            <div className={sx.ticket}>
+            <div className={sx.ticket} data-amount={"199"}>
               <Image src="/tic.jpeg" fill object-fit="cover" />
               <Button className={sx.btn} onClick={() => {
                 open()
@@ -258,7 +266,7 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className={sx.ticket}>
+            <div className={sx.ticket} data-amount={"499"}>
               <Image src="/tic1.jpeg" fill object-fit="cover" />
               <Button className={sx.btn} onClick={() => {
                 open()

@@ -12,7 +12,7 @@ export async function POST(request) {
  var options = {
   amount: amount,
   currency: currency,
-  receipt: 'rcp1',
+  receipt:  `receipt_${Date.now()}`,
  };
  const order = await razorpay.orders.create(options);
  console.log(order);

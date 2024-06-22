@@ -8,7 +8,15 @@
         height: 100%;
         background: url(/bg.jpg);
         background-size: contain;
+        color: #ffd800;
+        text-shadow: 0px 8px 20px #949300;
+        font-size: xx-large;
         background-position: center;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        
     }
     .block {
         padding: 34px;
@@ -32,10 +40,26 @@
         box-shadow: 5px 6px 20px 0 rgba(0, 0, 0, 0.4);
         cursor: pointer;
         border: 1px dashed rgb(255, 255, 255);
-        border-radius: 10px;
+        border-radius: 10px 30px 10px 10px;
         overflow: hidden;
         transition: 0.6s all;
         z-index: 1;
+        &::after{
+            position: absolute;
+            border-radius: 50%;
+            padding: 3%;
+            display: flex;
+            top: 0;
+            right: 0;
+            color: white;
+            aspect-ratio: 1/1;
+            text-align: center;
+            border: 1px solid #eaeae9;
+            background: #067838;
+            content: "₹" attr(data-amount);
+            align-content: center;
+            align-items: center;
+        }
         .btn {
             opacity: 0;
             transition: 0.6s all;
