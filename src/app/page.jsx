@@ -7,6 +7,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown, IconCurrencyRupee } from '@tabler/icons-react';
 import Script from "next/script";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -238,6 +239,12 @@ export default function Home() {
           <SimpleGrid>
             <span style={{ color: "#007700" }}>Payable <IconCurrencyRupee size={14} /> {ticket * Number(seats)}</span>
             <Button type="submit" loading={loading}>Book My Ticket</Button>
+            <div>
+              <Link style={{ fontSize: 12, color: "#217cbb" }} href="https://www.termsfeed.com/live/f3fe94c7-f116-44ce-a8e7-7c2a5aa67829" target="_blank">
+                Privacy and Policy
+              </Link>
+
+            </div>
             <span style={{
               color: "red",
               fontSize: "x-small",
