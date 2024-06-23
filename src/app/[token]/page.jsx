@@ -89,7 +89,7 @@ const Page = () => {
                 <>
                     <Ticket ref={ToCaptureRef} payment={payment} />
                     <div style={{ display: "flex", flexDirection: "column" }}>
-                        <span style={{ color: "red" }}>Musk keep this ticket</span>
+                        <span style={{ color: "red" }}>You must keep this ticket!</span>
                         <Button loading={loading1} onClick={captureScreenshot}>Download Ticket</Button>
                     </div>
                 </>
