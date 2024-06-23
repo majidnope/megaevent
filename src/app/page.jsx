@@ -299,10 +299,16 @@ export default function Home() {
                 Book this ticket
               </Button>
             </div>
+            <footer>
+              Contact Us <br />
+              <hr />
+              +91 95628 88440 <br />
+              dilbar888440@gmail.com
+
+            </footer>
 
           </SimpleGrid>
         </div>
-
 
       </main>
     </>

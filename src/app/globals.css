@@ -14,3 +14,10 @@ form{
   width: 100%;
   /* padding: 10px; */
 }
+
+footer{
+  color: white;
+  font-size: small;
+  padding: 22px;
+  background: #141615;
+}
