@@ -239,13 +239,27 @@ export default function Home() {
           <SimpleGrid>
             <span style={{ color: "#007700" }}>Payable <IconCurrencyRupee size={14} /> {ticket * Number(seats)}</span>
             <Button type="submit" loading={loading}>Book My Ticket</Button>
-            <div style={{ fontSize: 12 ,color:"gray"}}>
+            <div style={{ fontSize: 12, color: "gray" }}>
               <Link style={{ fontSize: 12, color: "#217cbb" }} href="https://www.termsfeed.com/live/f3fe94c7-f116-44ce-a8e7-7c2a5aa67829" target="_blank">
                 Privacy and Policy
               </Link>
-              {" | "} <Link style={{ fontSize: 12, color: "#217cbb" }} href="https://www.termsofusegenerator.net/live.php?token=V0yTUx4PfBnIYspG36UtTNBvREs2keyO" target="_blank">
-                Terms of Use
+              {" | "}
+              <Link style={{ fontSize: 12, color: "#217cbb" }} href="https://merchant.razorpay.com/policy/OP3n3b2BEabmTW/terms" target="_blank">
+                Terms & Conditions
               </Link>
+              {" | "}
+              <Link style={{ fontSize: 12, color: "#217cbb" }} href="https://merchant.razorpay.com/policy/OP3n3b2BEabmTW/refund" target="_blank">
+                Cancellation and Refund Policy
+                {" | "}
+              </Link>
+              {" | "}
+              <Link style={{ fontSize: 12, color: "#217cbb" }} href="https://merchant.razorpay.com/policy/OP3n3b2BEabmTW/refund" target="_blank">
+                Shipping & Delivery Policy
+
+              </Link>
+
+
+
 
             </div>
             <span style={{
