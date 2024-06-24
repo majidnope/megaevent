@@ -1,5 +1,5 @@
 "use client"
-import { Alert, Button, Input, Modal, SimpleGrid } from "@mantine/core";
+import { Alert, Button, Input, LoadingOverlay, Modal, SimpleGrid } from "@mantine/core";
 import { useState } from "react";
 import Image from "next/image";
 import sx from "./page.module.scss"
@@ -70,11 +70,11 @@ export default function Home() {
       setLoading(true)
       const orderId = await createOrderId();
       const options = {
-        key: "rzp_test_eqV8dCfHg4PKeK",
+        key: process.env.NEXT_PUBLIC_RAZ,
         amount: parseFloat(ticket * Number(seats)) * 100,
         currency: 'INR',
         name: 'Mega Event',
-        description: 'description',
+        description: 'Book your ticket for Calicut Mega Event',
         order_id: orderId,
         handler: async function (response) {
           const data = {
@@ -98,6 +98,8 @@ export default function Home() {
             nav.push(`/${res.id.split('pay_')[1]}`)
           }
           else {
+            setLoading(false)
+
             alert(res.message);
           }
         },
@@ -134,6 +136,12 @@ export default function Home() {
         id="razorpay-checkout-js"
         src="https://checkout.razorpay.com/v1/checkout.js"
       />
+       <LoadingOverlay
+          visible={loading}
+          zIndex={1000}
+          overlayProps={{ radius: 'sm', blur: 2 }}
+          loaderProps={{ color: 'blue', type: 'bars' }}
+        />
       <Modal opened={opened} onClose={close} title="Ticket Booking" centered styles={{
         body: {
           display: "flex",
@@ -305,7 +313,7 @@ export default function Home() {
               +91 95628 88440 <br />
               dilbar888440@gmail.com<br />
               <hr />
-              
+
               Kurikkal Avenue, Ramanattukara,
               Calicut, Kerala, India - 673633
 
