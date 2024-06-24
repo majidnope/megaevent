@@ -17,6 +17,7 @@ export default function Home() {
   const [opened, { open, close }] = useDisclosure(false);
   const [ticket, setTicket] = useState()
   const [loading, setLoading] = useState(false)
+  const [loading1, setLoading1] = useState(false)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [amount, setAmount] = useState(0)
@@ -83,6 +84,7 @@ export default function Home() {
             razorpayOrderId: response.razorpay_order_id,
             razorpaySignature: response.razorpay_signature,
           };
+          setLoading1(true)
 
           const result = await fetch('/api/verify', {
             method: 'POST',
@@ -96,9 +98,12 @@ export default function Home() {
           if (res.isOk) {
             setLoading(false)
             nav.push(`/${res.id.split('pay_')[1]}`)
+            setLoading1(false)
+
           }
           else {
             setLoading(false)
+            setLoading1(false)
 
             alert(res.message);
           }
@@ -109,6 +114,14 @@ export default function Home() {
         },
         theme: {
           color: '#3399cc',
+        },
+        modal: {
+          ondismiss: () => {
+            setLoading(false)
+            setLoading1(false)
+            close()
+
+          },
         },
       };
       const paymentObject = new window.Razorpay(options);
@@ -136,12 +149,12 @@ export default function Home() {
         id="razorpay-checkout-js"
         src="https://checkout.razorpay.com/v1/checkout.js"
       />
-       <LoadingOverlay
-          visible={loading}
-          zIndex={1000}
-          overlayProps={{ radius: 'sm', blur: 2 }}
-          loaderProps={{ color: 'blue', type: 'bars' }}
-        />
+      <LoadingOverlay
+        visible={loading1}
+        zIndex={1000}
+        overlayProps={{ radius: 'sm', blur: 2 }}
+        loaderProps={{ color: 'blue', type: 'bars' }}
+      />
       <Modal opened={opened} onClose={close} title="Ticket Booking" centered styles={{
         body: {
           display: "flex",
