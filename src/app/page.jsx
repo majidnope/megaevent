@@ -303,7 +303,11 @@ export default function Home() {
               Contact Us <br />
               <hr />
               +91 95628 88440 <br />
-              dilbar888440@gmail.com
+              dilbar888440@gmail.com<br />
+              <hr />
+              
+              Kurikkal Avenue, Ramanattukara,
+              Calicut, Kerala, India - 673633
 
             </footer>
 
